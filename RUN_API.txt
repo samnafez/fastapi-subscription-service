@@ -1,0 +1,10 @@
+1. Activate venv:
+    .\venv\Scripts\Activate.ps1
+
+2. Run Server:
+    python -m uvicorn app.main:app --reload
+
+3. Open Browser:
+    http://127.0.0.1:8000/docs
+
+If the terminal displays a GET, POST, and PATCH 200 OK, the API is running correctly
