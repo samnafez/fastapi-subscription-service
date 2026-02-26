@@ -1,65 +1,195 @@
 # FastAPI Subscription Service
 
-RESTful backend service built with Python and FastAPI to model user and subscription workflows. Designed with a focus on clean architecture, validation, testing, and maintainable API design.
+Production-style REST API built with **FastAPI** modeling a SaaS subscription lifecycle.
+
+This project simulates real-world subscription management including user creation, plan validation, lifecycle transitions (activation/cancellation), and relational persistence using SQLAlchemy.
+
+---
 
 ## Overview
 
-This project simulates a subscription lifecycle system, including user management, subscription state handling, and structured API interactions. The goal was to practice scalable backend design principles and build a modular, testable service following industry best practices.
+This backend service models a simplified subscription platform similar to SaaS products.
 
-## Features
+The project focuses on:
 
-- RESTful API endpoints for user and subscription workflows
-- Input validation using Pydantic schemas
-- Modular router-based API structure
-- SQLAlchemy ORM integration for database interactions
-- Structured separation of business logic from request handling
-- Iterative debugging and refinement workflow
+- Clean architecture
+- Predictable state transitions
+- Schema-driven validation
+- Proper HTTP semantics
+- Extensible backend design
+
+---
+
+## Core Features
+
+- RESTful API following resource-based conventions
+- User creation and persistence
+- Subscription creation with enum-based plan validation (`Basic`, `Standard`, `Premium`)
+- Subscription cancellation via partial updates (`PATCH`)
+- Structured error handling (400 / 404 / 422)
+- SQLAlchemy ORM integration with relational modeling
+- Swagger-generated interactive API documentation
+
+---
+
+## Example API Usage
+
+### Create a User
+
+**Request**
+
+```http
+POST /users
+Content-Type: application/json
+```
+
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+**Response (200 OK)**
+
+```json
+{
+  "id": 1,
+  "email": "user@example.com"
+}
+```
+
+---
+
+### Create a Subscription
+
+**Request**
+
+```http
+POST /subscriptions
+Content-Type: application/json
+```
+
+```json
+{
+  "user_id": 1,
+  "plan": "Premium"
+}
+```
+
+**Response (200 OK)**
+
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "plan": "Premium",
+  "active": true
+}
+```
+
+---
+
+### Invalid Plan (Validation Error)
+
+**Request**
+
+```http
+POST /subscriptions
+Content-Type: application/json
+```
+
+```json
+{
+  "user_id": 1,
+  "plan": "Gold"
+}
+```
+
+**Response (422 Unprocessable Entity)**
+
+```json
+{
+  "detail": [
+    {
+      "loc": ["body", "plan"],
+      "msg": "Input should be 'Basic', 'Standard' or 'Premium'",
+      "type": "enum"
+    }
+  ]
+}
+```
+
+---
+
+### Cancel a Subscription
+
+**Request**
+
+```http
+PATCH /subscriptions/1?active=false
+```
+
+**Response (200 OK)**
+
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "plan": "Premium",
+  "active": false
+}
+```
+
+---
 
 ## Tech Stack
 
-- Python
+- Python 3
 - FastAPI
 - SQLAlchemy (ORM)
-- SQLite (local development database)
+- SQLite
 - Uvicorn
+- Pydantic
+
+---
 
 ## Architecture
 
-- Router-based API structure (`app/routers/`)
-- ORM models defined in `models.py`
-- Pydantic schemas for request/response validation
-- Centralized database session management
-- Clear separation of concerns between API layer and data layer
+```
+app/
+├── main.py
+├── routers/
+├── models.py
+├── schemas.py
+├── database.py
+```
 
-## Design Decisions
+### Design Principles
 
-This project emphasizes maintainability and clear system boundaries.
+- Separation of concerns between routing, validation, and persistence
+- Schema-first validation using Pydantic
+- Controlled subscription lifecycle management
+- Extensible backend structure
 
-- **Router-based API structure:** Endpoints are separated into modules to improve readability and scalability.
-- **Validation layer:** Pydantic schemas ensure predictable data flow and reduce downstream errors.
-- **Separation of concerns:** Business logic is separated from request handling to support easier testing and feature expansion.
-- **Extensible data models:** Designed to support additional subscription types without major refactoring.
-
-## Project Structure
-
-- `app/main.py` — FastAPI application entrypoint  
-- `app/routers/` — API route modules  
-- `app/models.py` — SQLAlchemy ORM models  
-- `app/schemas.py` — Pydantic schemas  
-- `app/database.py` — Database engine and session configuration  
+---
 
 ## Future Improvements
 
-- Authentication and authorization layer  
-- Asynchronous task handling  
-- Improved telemetry and structured logging  
-- Expanded automated test coverage  
+- Authentication and role-based access control
+- Payment simulation layer
+- Docker containerization
+- Cloud deployment
+- Expanded automated test coverage
+
+---
 
 ## Running Locally
 
 ```bash
 pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
+```
 
-Open your browser at:
+Open:
+
 http://127.0.0.1:8000/docs
