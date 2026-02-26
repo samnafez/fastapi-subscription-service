@@ -1,0 +1,14 @@
+# FastAPI Subscription Service API
+
+Designed and implemented a RESTful backend service simulating user subscription workflows.
+
+## Features
+- User management endpoints
+- Subscription lifecycle workflows
+- Data validation and structured API design
+
+## Technologies
+Python, FastAPI, SQL/NoSQL, Git
+
+## Status
+Functional prototype demonstrating backend architecture and API design.
