@@ -43,3 +43,4 @@ Future improvements could include authentication layers, async task handling, an
 ```bash
 pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
+Open: http://127.0.0.1:8000/docs
