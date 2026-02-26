@@ -9,38 +9,54 @@ This project simulates a subscription lifecycle system, including user managemen
 ## Features
 
 - RESTful API endpoints for user and subscription workflows
-- Input validation and structured request handling
-- Modular backend architecture for maintainability
-- Debugging and iterative development workflow
-- Emphasis on clean design and extensibility
+- Input validation using Pydantic schemas
+- Modular router-based API structure
+- SQLAlchemy ORM integration for database interactions
+- Structured separation of business logic from request handling
+- Iterative debugging and refinement workflow
 
 ## Tech Stack
 
 - Python
 - FastAPI
-- NoSQL database (specify if used)
-- Pytest (if used)
+- SQLAlchemy (ORM)
+- SQLite (local development database)
+- Uvicorn
 
 ## Architecture
 
-- Router-based API structure
-- Separation of business logic from request handling
-- Data validation layer for reliability
+- Router-based API structure (`app/routers/`)
+- ORM models defined in `models.py`
+- Pydantic schemas for request/response validation
+- Centralized database session management
+- Clear separation of concerns between API layer and data layer
 
 ## Design Decisions
 
 This project emphasizes maintainability and clear system boundaries.
 
-- **Router-based API structure:** Endpoints are separated into modules to improve readability and future scalability.
-- **Validation layer:** Input validation ensures predictable data flow and reduces downstream errors.
-- **Separation of concerns:** Business logic is separated from request handling to make testing and future feature expansion easier.
+- **Router-based API structure:** Endpoints are separated into modules to improve readability and scalability.
+- **Validation layer:** Pydantic schemas ensure predictable data flow and reduce downstream errors.
+- **Separation of concerns:** Business logic is separated from request handling to support easier testing and feature expansion.
 - **Extensible data models:** Designed to support additional subscription types without major refactoring.
 
-Future improvements could include authentication layers, async task handling, and improved telemetry/logging.
+## Project Structure
+
+- `app/main.py` — FastAPI application entrypoint  
+- `app/routers/` — API route modules  
+- `app/models.py` — SQLAlchemy ORM models  
+- `app/schemas.py` — Pydantic schemas  
+- `app/database.py` — Database engine and session configuration  
+
+## Future Improvements
+
+- Authentication and authorization layer  
+- Asynchronous task handling  
+- Improved telemetry and structured logging  
+- Expanded automated test coverage  
 
 ## Running Locally
 
 ```bash
 pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
-Open: http://127.0.0.1:8000/docs
