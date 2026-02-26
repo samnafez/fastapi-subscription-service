@@ -42,4 +42,4 @@ Future improvements could include authentication layers, async task handling, an
 
 ```bash
 pip install -r requirements.txt
-uvicorn main:app --reload
+python -m uvicorn app.main:app --reload
